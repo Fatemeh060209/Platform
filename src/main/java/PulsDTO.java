@@ -2,34 +2,35 @@ import java.sql.Timestamp;
 
 public class PulsDTO {
 
-    private Timestamp[] tid=new Timestamp[20];
-    private int[] Id=new int[20];
-    private int[] pulsList = new int[20];
+    private Timestamp Puls_time;
+    private int Patient_ID;
+    private double Puls_Målinger;
 
-
-    public Timestamp[] getTid() {
-        return tid;
+    public Timestamp getPuls_time() {
+        return Puls_time;
     }
 
-    public void setTid(Timestamp[] tid) {
-        this.tid = tid;
+    public void setPuls_time(Timestamp puls_time) {
+        Puls_time = puls_time;
     }
 
-    public int[] getId() {
-        return Id;
+    public int getPatient_ID() {
+        return Patient_ID;
     }
 
-    public void setId(int[] id) {
-        Id = id;
+    public void setPatient_ID(int patient_ID) {
+        Patient_ID = patient_ID;
     }
 
-    public int[] getPulsList() {
-        return pulsList;
+    public double getPuls_Målinger() {
+        return Puls_Målinger;
     }
 
-    public void setPulsList(int[] pulsList) {
-        this.pulsList = pulsList;
+    public void setPuls_Målinger(double puls_Målinger) {
+        Puls_Målinger = puls_Målinger;
     }
 }
+
+
 
 

@@ -1,8 +1,10 @@
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface PulsDAO {
-    String save(PulsDTO PulsDTO);
+    void save(PulsDTO PulsDTO);
     void savebatch(List<PulsDTO> batch);
-    PulsDTO load(PulsDTO PulsDTO);
+    List<PulsDTO> load(String cpr);
+    List<PulsDTO> load(String cpr, Timestamp start, Timestamp end);
 }
 
