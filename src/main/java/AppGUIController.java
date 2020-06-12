@@ -1,4 +1,4 @@
-import javafx.application.Platform;
+/*import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -84,3 +84,6 @@ public class AppGUIController implements Listener {
 
     }
 }
+
+
+ */

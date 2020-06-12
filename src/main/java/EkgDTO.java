@@ -2,33 +2,32 @@ import java.sql.Timestamp;
 
 public class EkgDTO {
 
-    private Timestamp[] tid=new Timestamp[20];
-    private int[] Id=new int[20];
-    private int[] ekgList = new int[20];
+    private Timestamp EKG_time;
+    private int Patient_Id;
+    private double EKG_voltage;
 
-
-    public Timestamp[] getTid() {
-        return tid;
+    public Timestamp getEKG_time() {
+        return EKG_time;
     }
 
-    public void setTid(Timestamp[] tid) {
-        this.tid = tid;
+    public void setEKG_time(Timestamp EKG_time) {
+        this.EKG_time = EKG_time;
     }
 
-    public int[] getId() {
-        return Id;
+    public int getPatient_Id() {
+        return Patient_Id;
     }
 
-    public void setId(int[] id) {
-        Id = id;
+    public void setPatient_Id(int patient_Id) {
+        Patient_Id = patient_Id;
     }
 
-    public int[] getEkgList() {
-        return ekgList;
+    public double getEKG_voltage() {
+        return EKG_voltage;
     }
 
-    public void setEkgList(int[] ekgList) {
-        this.ekgList = ekgList;
+    public void setEKG_voltage(double EKG_voltage) {
+        this.EKG_voltage = EKG_voltage;
     }
 }
 

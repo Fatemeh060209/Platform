@@ -1,43 +1,76 @@
 import java.sql.*;
+import java.util.LinkedList;
 import java.util.List;
 
 public class EkgDAOImplement implements EkgDAO {
 
-    Connection conn = Connector.getConn();
 
-    public String save(EkgDTO ekgDTO) {
+    public void save(EkgDTO ekgDTO) {
+        Connection conn = Connector.getConn();
         try {
-            int[] id = new int[20];
-            id = ekgDTO.getId();
-            int[] ekg = new int[20];
-            ekg = ekgDTO.getEkgList();
-            Timestamp[] tid = new Timestamp[20];
-            tid = ekgDTO.getTid();
-            PreparedStatement statement = conn.prepareStatement("INSERT INTO Målinger (ID,Ekg,Tid) values (?,?,?)");
-            for (int i = 0; i < ekg.length; i++) {
-                statement.setInt(1, id[i]);
-                statement.setInt(2, ekg[i]);
-                statement.setTimestamp(3, tid[i]);
-                statement.addBatch();
+            PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO EKG (Patient_id, EKG_voltage, EKG_time) VALUES (?,?,?)");
+            preparedStatement.setInt(1, ekgDTO.getPatient_Id());
+            preparedStatement.setDouble(2, ekgDTO.getEKG_voltage());
+            preparedStatement.setTimestamp(3, ekgDTO.getEKG_time());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void savebatch(List<EkgDTO> batch) {
+        Connection conn = Connector.getConn();
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement("INSERT INTO EKG (Patient_id, EKG_voltage, EKG_time) VALUES (?,?,?)");
+            for (EkgDTO ekgDTO : batch) {
+                preparedStatement.setInt(1, ekgDTO.getPatient_Id());
+                preparedStatement.setDouble(2, ekgDTO.getEKG_voltage());
+                preparedStatement.setTimestamp(3, ekgDTO.getEKG_time());
+                preparedStatement.addBatch();
             }
-            statement.executeBatch();
+            preparedStatement.executeBatch();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<EkgDTO> load(String cpr) {
+        try {
+            PreparedStatement preparedStatement = Connector.getConn().prepareStatement("SELECT * FROM Patienter JOIN EKG AS E on Patienter.ID = E.Patient_id WHERE Cpr=?");
+            preparedStatement.setString(1, cpr);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<EkgDTO> listEkg = mapResultSetToDTOList(resultSet);
+            return listEkg;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public void savebatch(List<EkgDTO> batch) {
+    private List<EkgDTO> mapResultSetToDTOList(ResultSet resultSet) throws SQLException {
+        List<EkgDTO> listEkg = new LinkedList<>();
+        while (resultSet.next()) {
+            EkgDTO ekgDTO = new EkgDTO();
+            ekgDTO.setPatient_Id(resultSet.getInt("Patient_id"));
+            ekgDTO.setEKG_voltage(resultSet.getDouble("EKG_voltage"));
+            ekgDTO.setEKG_time(resultSet.getTimestamp("EKG_time"));
+            listEkg.add(ekgDTO);
+        }
+        return listEkg;
     }
 
-    public EkgDTO load(EkgDTO EkgDTO) {
+    @Override
+    public List<EkgDTO> load(String cpr, Timestamp start, Timestamp end) {
         try {
-            Statement statement = conn.createStatement();
-            ResultSet show_tables = statement.executeQuery("SELECT * FROM Patienter, EKG WHERE Patienter.ID=EKG.Patient_ID AND Patienter.Cpr=?");
-            while (show_tables.next()) {
-                EkgDTO.setEkgList(new int[]{show_tables.getInt("EKG")});
-            }
-            return EkgDTO;
+            PreparedStatement preparedStatement = Connector.getConn().prepareStatement("SELECT * FROM Patienter JOIN EKG AS E on Patienter.ID = E.Patient_id WHERE Cpr=? AND EKG_time BETWEEN ? AND ?");
+            preparedStatement.setString(1, cpr);
+            preparedStatement.setTimestamp(2, start);
+            preparedStatement.setTimestamp(3, end);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<EkgDTO> listEkg = mapResultSetToDTOList(resultSet);
+            return listEkg;
         } catch (SQLException e) {
             e.printStackTrace();
         }

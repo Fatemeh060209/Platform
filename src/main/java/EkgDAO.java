@@ -1,8 +1,13 @@
+import java.sql.Timestamp;
 import java.util.List;
 
-public interface EkgDAO{
-    String save(EkgDTO EkgDTO);
+public interface EkgDAO {
+    void save(EkgDTO EkgDTO);
+
     void savebatch(List<EkgDTO> batch);
-    EkgDTO load(EkgDTO EkgDTO);
+
+    List<EkgDTO> load(String cpr);
+
+    List<EkgDTO> load(String cpr, Timestamp start, Timestamp end);
 }
 
