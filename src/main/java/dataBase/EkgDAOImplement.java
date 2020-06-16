@@ -1,3 +1,5 @@
+package dataBase;
+
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,6 +37,18 @@ public class EkgDAOImplement implements EkgDAO {
         }
     }
 
+    private List<EkgDTO> mapResultSetToDTOList(ResultSet resultSet) throws SQLException {
+        List<EkgDTO> listEkg = new LinkedList<>();
+        while (resultSet.next()) {
+            EkgDTO ekgDTO = new EkgDTO();
+            ekgDTO.setPatient_Id(resultSet.getInt("Patient_id"));
+            ekgDTO.setEKG_voltage(resultSet.getDouble("EKG_voltage"));
+            ekgDTO.setEKG_time(resultSet.getTimestamp("EKG_time"));
+            listEkg.add(ekgDTO);
+        }
+        return listEkg;
+    }
+
     @Override
     public List<EkgDTO> load(String cpr) {
         try {
@@ -47,18 +61,6 @@ public class EkgDAOImplement implements EkgDAO {
             e.printStackTrace();
         }
         return null;
-    }
-
-    private List<EkgDTO> mapResultSetToDTOList(ResultSet resultSet) throws SQLException {
-        List<EkgDTO> listEkg = new LinkedList<>();
-        while (resultSet.next()) {
-            EkgDTO ekgDTO = new EkgDTO();
-            ekgDTO.setPatient_Id(resultSet.getInt("Patient_id"));
-            ekgDTO.setEKG_voltage(resultSet.getDouble("EKG_voltage"));
-            ekgDTO.setEKG_time(resultSet.getTimestamp("EKG_time"));
-            listEkg.add(ekgDTO);
-        }
-        return listEkg;
     }
 
     @Override

@@ -15,7 +15,7 @@ public class App extends Application {
     @Override
 
     public void start(Stage primaryStage) throws IOException {
-            Parent firstPaneLoader = FXMLLoader.load(getClass().getResource("/logIn.fxml"));
+            Parent firstPaneLoader = FXMLLoader.load(getClass().getResource("/LogIn.fxml"));
             Scene firstScene = new Scene(firstPaneLoader);
             primaryStage.setScene(firstScene);
             primaryStage.setTitle("Sundhedsplatformen ");

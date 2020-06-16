@@ -1,3 +1,5 @@
+package dataBase;
+
 import java.sql.Timestamp;
 
 public class EkgDTO {

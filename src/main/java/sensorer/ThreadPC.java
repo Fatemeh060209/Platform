@@ -1,9 +1,17 @@
-public class ThreadExample {
-    public static void main(String[] args)
-            throws InterruptedException {
+package sensorer;
+
+public class ThreadPC implements Runnable {
+    private EkgListener listener;
+
+    public ThreadPC(EkgListener listener) {
+        this.listener = listener;
+    }
+
+    public void run() {
         // Object of a class that has both produce()
         // and consume() methods
         final PC pc = new PC();
+        pc.registerObserver(this.listener);
 
         // Create producer thread
         Thread t1 = new Thread(new Runnable() {
@@ -22,17 +30,7 @@ public class ThreadExample {
             @Override
             public void run() {
                 try {
-                    pc.consumeDB();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        Thread t3 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    pc.consumeGUI();
+                    pc.consume();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -42,11 +40,12 @@ public class ThreadExample {
         // Start both threads
         t1.start();
         t2.start();
-        t3.start();
-
         // t1 finishes before t2
-        t1.join();
-        t2.join();
-        t3.join();
+        try {
+            t1.join();
+            t2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,3 +1,5 @@
+package dataBase;
+
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,25 +18,19 @@ public class PulsDAOImplement implements PulsDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
-    public void savebatch(List<PulsDTO> batch) {
-        Connection conn = Connector.getConn();
-            PreparedStatement preparedStatement = null;
-            try {
-                preparedStatement = conn.prepareStatement("INSERT INTO EKG (Patient_ID, Puls_Målinger, Puls_time) VALUES (?,?,?)");
-                for (PulsDTO pulsDTO : batch) {
-                    preparedStatement.setInt(1, pulsDTO.getPatient_ID());
-                    preparedStatement.setDouble(2, pulsDTO.getPuls_Målinger());
-                    preparedStatement.setTimestamp(3, pulsDTO.getPuls_time());
-                    preparedStatement.addBatch();
-                }
-                preparedStatement.executeBatch();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
 
+    private List<PulsDTO> mapResultSetToDTOList(ResultSet resultSet) throws SQLException {
+        List<PulsDTO> listPuls = new LinkedList<>();
+        while (resultSet.next()) {
+            PulsDTO PulsDTO = new PulsDTO();
+            PulsDTO.setPatient_ID(resultSet.getInt("Patient_ID"));
+            PulsDTO.setPuls_Målinger(resultSet.getDouble("Puls_Målinger"));
+            PulsDTO.setPuls_time(resultSet.getTimestamp("Puls_time"));
+            listPuls.add(PulsDTO);
+        }
+        return listPuls;
+    }
 
     @Override
     public List<PulsDTO> load(String cpr) {
@@ -50,18 +46,6 @@ public class PulsDAOImplement implements PulsDAO {
         return null;
     }
 
-
-    private List<PulsDTO> mapResultSetToDTOList(ResultSet resultSet) throws SQLException {
-        List<PulsDTO> listPuls = new LinkedList<>();
-        while (resultSet.next()) {
-            PulsDTO PulsDTO = new PulsDTO();
-            PulsDTO.setPatient_ID(resultSet.getInt("Patient_ID"));
-            PulsDTO.setPuls_Målinger(resultSet.getDouble("Puls_Målinger"));
-            PulsDTO.setPuls_time(resultSet.getTimestamp("Puls_time"));
-            listPuls.add(PulsDTO);
-        }
-        return listPuls;
-    }
     @Override
     public List<PulsDTO> load(String cpr, Timestamp start, Timestamp end) {
         try {

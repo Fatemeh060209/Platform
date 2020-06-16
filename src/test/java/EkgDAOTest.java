@@ -1,8 +1,8 @@
-import java.sql.PreparedStatement;
+import dataBase.EkgDAOImplement;
+import dataBase.EkgDTO;
+
 import java.sql.Timestamp;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class EkgDAOTest {
 

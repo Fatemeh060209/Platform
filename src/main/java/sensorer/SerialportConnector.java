@@ -1,4 +1,12 @@
-import jssc.*;
+package sensorer;
+
+import dataBase.EkgDTO;
+import jssc.SerialPort;
+import jssc.SerialPortList;
+
+import java.sql.Timestamp;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SerialportConnector {
     private SerialPort serialPort = null;
@@ -20,7 +28,7 @@ public class SerialportConnector {
         }
     }
 
-    public int[] getData() {//metoden oprettes
+    public List<EkgDTO> getData() {//metoden oprettes
         try {
             if (serialPort.getInputBufferBytesCount() >= 12) {//kontrolstruktur
                 result = serialPort.readString();//strengen aflæses og tildeles result
@@ -28,9 +36,12 @@ public class SerialportConnector {
                 if (result != null && result.charAt(result.length() - 1) == ' ') {//result kontroleres
                     result = result.substring(0, result.length() - 1);//her fjernes det sidste index(#)
                     rawValues = result.split(" ");//nu splittes strengen og gemmes i et array
-                    int[] values = new int[rawValues.length];
+                    List<EkgDTO> values = new LinkedList<>();
                     for (int i = 0; i < rawValues.length; i++) {
-                        values[i] = Integer.parseInt(rawValues[i]);
+                        EkgDTO ekgDTO = new EkgDTO();
+                        ekgDTO.setEKG_voltage(Integer.parseInt(rawValues[i]));
+                        ekgDTO.setEKG_time(new Timestamp(System.currentTimeMillis()));
+                        values.add(ekgDTO);
                     }
                     return values;
                 }
