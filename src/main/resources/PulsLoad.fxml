@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javaFx.AppGUIController">
+    <children>
+        <Button fx:id="Back" layoutX="25.0" layoutY="350.0" mnemonicParsing="false" text="Back" />
+        <Button fx:id="PulsStart" layoutX="350.0" layoutY="80.0" mnemonicParsing="false" text="Mesure" />
+        <Button fx:id="PulsLog" layoutX="515.0" layoutY="350.0" mnemonicParsing="false" text="Showlog" />
+        <TextArea layoutX="64.0" layoutY="142.0" prefHeight="54.0" prefWidth="472.0" />
+        <TextField fx:id="PulsID" layoutX="150.0" layoutY="80.0" />
+        <Label layoutX="64.0" layoutY="85.0" text="Patient ID:" />
+        <Polyline fx:id="PulsGraf" fill="BLACK" layoutX="290.0" layoutY="274.0" strokeType="INSIDE">
+        </Polyline>
+    </children>
+</AnchorPane>

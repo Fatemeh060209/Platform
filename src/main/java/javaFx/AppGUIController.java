@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
 import sensorer.EkgListener;
 import sensorer.PulsGenerator;
@@ -32,6 +33,11 @@ public class AppGUIController implements PulsListener, EkgListener {
 
     public EkgDAO ekgDAO = new EkgDAOImplement(); // opretter en objekt af klaseem TempDAO
     public PulsDAO pulsDAO = new PulsDAOImplement();
+    public TextField EKGID;
+    public Button EkgStart;
+    public Button Back;
+    public Button EKGLog;
+    public Polyline EKGGraf;
 
     public void ekgSampler(ActionEvent actionEvent) { // Event Driving Programming
         ThreadPC threadPC = new ThreadPC(this);
@@ -65,7 +71,7 @@ public class AppGUIController implements PulsListener, EkgListener {
     }
 
     public void load(ActionEvent actionEvent) throws IOException {
-        Parent thirdPaneLoader = FXMLLoader.load(getClass().getResource("/Load.fxml"));
+        Parent thirdPaneLoader = FXMLLoader.load(getClass().getResource("/EKGLoad.fxml"));
         Scene thirdScene = new Scene(thirdPaneLoader);
         Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         primaryStage.setScene(thirdScene);
