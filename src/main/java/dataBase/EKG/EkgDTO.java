@@ -1,4 +1,4 @@
-package dataBase;
+package dataBase.EKG;
 
 import java.sql.Timestamp;
 
@@ -21,7 +21,7 @@ public class EkgDTO {
     }
 
     public void setPatient_Id(int patient_Id) {
-        Patient_Id = patient_Id;
+        this.Patient_Id = patient_Id;
     }
 
     public double getEKG_voltage() {

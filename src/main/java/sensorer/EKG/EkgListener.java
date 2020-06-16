@@ -1,6 +1,6 @@
-package sensorer;
+package sensorer.EKG;
 
-import dataBase.EkgDTO;
+import dataBase.EKG.EkgDTO;
 
 import java.util.LinkedList;
 

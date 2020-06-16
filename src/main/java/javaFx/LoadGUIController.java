@@ -1,8 +1,11 @@
 package javaFx;
 
-import dataBase.EkgDAO;
-import dataBase.EkgDAOImplement;
-import dataBase.EkgDTO;
+import dataBase.EKG.EkgDAO;
+import dataBase.EKG.EkgDAOImplement;
+import dataBase.EKG.EkgDTO;
+import dataBase.Puls.PulsDAO;
+import dataBase.Puls.PulsDAOImplement;
+import dataBase.Puls.PulsDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -18,38 +21,38 @@ import java.util.List;
 
 public class LoadGUIController {
 
-    public Button PulsSøg;  // referenser til controls fra FXML-filen
+    public Button pulsSearch;  // referenser til controls fra FXML-filen
     public Button pulsBack;
-    public Button EKGBack;
-    public Button EKGSøg;
     public TextField idPulsField;
     public TextArea plusLoad;
-    public TextField idEKGPuls;
-    public TextArea EKGLoad;
 
+    public Button ekgBack;
+    public Button ekgSearch;
+    public TextField idEkgField;
+    public TextArea ekgLoad;
 
     public void LoadEKGData(ActionEvent actionEvent) { //  Event Driving Programming
 
         // oprettes en ny variabel og tildeles værdien fra idField
         EkgDAO ekgDAO = new EkgDAOImplement(); // oprettes en objekt af TempImpl
-        List<EkgDTO> tempData = ekgDAO.load(idPulsField.getText()); // listen som indeholder tempDTO'er udfyldes af resultset der
+        List<EkgDTO> ekgDTOS = ekgDAO.load(idEkgField.getText()); // listen som indeholder tempDTO'er udfyldes af resultset der
         // hentes fra laode
         String text = "";
-        for (EkgDTO data : tempData) { // for hvert element i listen tempData tilføjes elements data til stringen text
-            text += "ID: " + data.getPatient_Id() + ", Time: " + data.getEKG_time() + ", Temperature: " + data.getEKG_voltage() + " °C" + "\r\n";
+        for (EkgDTO ekgDTO : ekgDTOS) { // for hvert element i listen ekgDTOS tilføjes elements ekgDTO til stringen text
+            text += "ID: " + ekgDTO.getPatient_Id() + ", Time: " + ekgDTO.getEKG_time() + ", EKG voltages: " + ekgDTO.getEKG_voltage() + " V" + "\r\n";
         }
-        plusLoad.setText(text); // indsætter i text area
+        ekgLoad.setText(text); // indsætter i text area
     }
 
     public void LoadPulsData(ActionEvent actionEvent) { //  Event Driving Programming
 
         // oprettes en ny variabel og tildeles værdien fra idField
-        EkgDAO ekgDAO = new EkgDAOImplement(); // oprettes en objekt af TempImpl
-        List<EkgDTO> tempData = ekgDAO.load(idPulsField.getText()); // listen som indeholder tempDTO'er udfyldes af resultset der
+        PulsDAO pulsDAO = new PulsDAOImplement(); // oprettes en objekt af TempImpl
+        List<PulsDTO> pulsDTOS = pulsDAO.load(idPulsField.getText()); // listen som indeholder tempDTO'er udfyldes af resultset der
         // hentes fra laode
         String text = "";
-        for (EkgDTO data : tempData) { // for hvert element i listen tempData tilføjes elements data til stringen text
-            text += "ID: " + data.getPatient_Id() + ", Time: " + data.getEKG_time() + ", Temperature: " + data.getEKG_voltage() + " °C" + "\r\n";
+        for (PulsDTO pulsDTO : pulsDTOS) { // for hvert element i listen pulsDTOS tilføjes elements pulsDTO til stringen text
+            text += "ID: " + pulsDTO.getPatient_ID() + ", Time: " + pulsDTO.getPuls_time() + ", Puls: " + pulsDTO.getPuls_Measurements() + "\r\n";
         }
         plusLoad.setText(text); // indsætter i text area
     }

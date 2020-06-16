@@ -1,6 +1,6 @@
-package sensorer;
+package sensorer.EKG;
 
-import dataBase.EkgDTO;
+import dataBase.EKG.EkgDTO;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +11,7 @@ public class PC implements EkgObservable {
     private SerialportConnector serialportConnector = new SerialportConnector(0);
     // Create a list shared by producer and consumer
     // Size of list is 2.
-    LinkedList<EkgDTO> ekgDTOS = new LinkedList<EkgDTO>();
+    LinkedList<EkgDTO> ekgDTOS = new LinkedList<>();
     int capacity = 100;
     private EkgListener ekgListener;
 

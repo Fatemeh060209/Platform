@@ -6,18 +6,15 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="javaFx.AppGUIController">
-    <children>
-        <Button fx:id="BackEKG" layoutX="25.0" layoutY="350.0" mnemonicParsing="false" onAction="#patientData"
-                text="Back"/>
-        <Button fx:id="EkgStart" layoutX="350.0" layoutY="80.0" mnemonicParsing="false" onAction="#ekgSampler"
-                text="Mesure"/>
-        <Button fx:id="loadEkg" layoutX="515.0" layoutY="350.0" mnemonicParsing="false" onAction="#loadEkg"
-                text="Showlog"/>
-        <TextArea fx:id="ekgDataOutput" layoutX="64.0" layoutY="142.0" prefHeight="54.0" prefWidth="472.0"/>
-        <TextField fx:id="EKGID" layoutX="150.0" layoutY="80.0"/>
-        <Label layoutX="64.0" layoutY="85.0" text="Patient ID:"/>
-        <Polyline fx:id="EKGGraf" fill="BLACK" layoutX="290.0" layoutY="274.0" strokeType="INSIDE">
-        </Polyline>
-        <Label layoutX="479.0" layoutY="6.0" text="Date: XX/XX/XXXX"/>
-    </children>
+    <Button fx:id="BackEKG" layoutX="25.0" layoutY="350.0" mnemonicParsing="false" onAction="#patientData"
+            text="Back"/>
+    <Button fx:id="EkgStart" layoutX="350.0" layoutY="80.0" mnemonicParsing="false" onAction="#ekgSampler"
+            text="Mesure"/>
+    <Button fx:id="loadEkg" layoutX="515.0" layoutY="350.0" mnemonicParsing="false" onAction="#loadEkg"
+            text="Showlog"/>
+    <TextArea fx:id="ekgDataOutput" layoutX="64.0" layoutY="142.0" prefHeight="54.0" prefWidth="472.0"/>
+    <TextField fx:id="EKGID" layoutX="150.0" layoutY="80.0"/>
+    <Label layoutX="64.0" layoutY="85.0" text="Patient ID:"/>
+    <Polyline fx:id="EKGGraf" layoutX="290.0" layoutY="274.0" strokeType="INSIDE"/>
+    <Label layoutX="479.0" layoutY="6.0" text="Date: XX/XX/XXXX"/>
 </AnchorPane>

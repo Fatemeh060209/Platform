@@ -1,4 +1,4 @@
-package dataBase;
+package dataBase.Puls;
 
 import java.sql.Timestamp;
 import java.util.List;

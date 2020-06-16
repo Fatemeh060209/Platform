@@ -1,4 +1,4 @@
-package dataBase;
+package dataBase.EKG;
 
 import java.sql.Timestamp;
 import java.util.List;

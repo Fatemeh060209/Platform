@@ -1,4 +1,6 @@
-package dataBase;
+package dataBase.Puls;
+
+import dataBase.Connector;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -12,7 +14,7 @@ public class PulsDAOImplement implements PulsDAO {
         try {
             PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO EKG (Patient_ID, Puls_Målinger, Puls_time) VALUES (?,?,?)");
             preparedStatement.setInt(1, pulsDTO.getPatient_ID());
-            preparedStatement.setDouble(2, pulsDTO.getPuls_Målinger());
+            preparedStatement.setDouble(2, pulsDTO.getPuls_Measurements());
             preparedStatement.setTimestamp(3, pulsDTO.getPuls_time());
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -25,7 +27,7 @@ public class PulsDAOImplement implements PulsDAO {
         while (resultSet.next()) {
             PulsDTO PulsDTO = new PulsDTO();
             PulsDTO.setPatient_ID(resultSet.getInt("Patient_ID"));
-            PulsDTO.setPuls_Målinger(resultSet.getDouble("Puls_Målinger"));
+            PulsDTO.setPuls_Measurements(resultSet.getDouble("Puls_Målinger"));
             PulsDTO.setPuls_time(resultSet.getTimestamp("Puls_time"));
             listPuls.add(PulsDTO);
         }

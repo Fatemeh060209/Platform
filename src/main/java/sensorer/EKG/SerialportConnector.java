@@ -1,6 +1,6 @@
-package sensorer;
+package sensorer.EKG;
 
-import dataBase.EkgDTO;
+import dataBase.EKG.EkgDTO;
 import jssc.SerialPort;
 import jssc.SerialPortList;
 

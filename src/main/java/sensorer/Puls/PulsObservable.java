@@ -1,4 +1,4 @@
-package sensorer;
+package sensorer.Puls;
 
 import javaFx.AppGUIController;
 

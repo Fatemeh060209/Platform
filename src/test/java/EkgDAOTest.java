@@ -1,5 +1,5 @@
-import dataBase.EkgDAOImplement;
-import dataBase.EkgDTO;
+import dataBase.EKG.EkgDAOImplement;
+import dataBase.EKG.EkgDTO;
 
 import java.sql.Timestamp;
 import java.util.List;

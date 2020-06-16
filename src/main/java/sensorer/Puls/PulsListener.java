@@ -1,6 +1,6 @@
-package sensorer;
+package sensorer.Puls;
 
-import dataBase.PulsDTO;
+import dataBase.Puls.PulsDTO;
 
 public interface PulsListener {
     void PulsNotify (PulsDTO pulsDTO);

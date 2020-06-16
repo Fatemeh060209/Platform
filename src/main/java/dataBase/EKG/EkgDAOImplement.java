@@ -1,4 +1,6 @@
-package dataBase;
+package dataBase.EKG;
+
+import dataBase.Connector;
 
 import java.sql.*;
 import java.util.LinkedList;
