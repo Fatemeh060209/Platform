@@ -3,14 +3,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="javaFx.AppGUIController">
-    <Label layoutX="479.0" layoutY="6.0" text="Date: XX/XX/XXXX"/>
-    <Button fx:id="pulsScene" layoutX="47.0" layoutY="212.0" mnemonicParsing="false" onAction="#pulsScene"
-            prefHeight="42.0" prefWidth="142.0" text="Puls"/>
-    <Button fx:id="logIn" layoutX="14.0" layoutY="359.0" mnemonicParsing="false" onAction="#LogIn" text="Back"/>
-    <Button fx:id="ekgScene" layoutX="47.0" layoutY="131.0" mnemonicParsing="false" onAction="#ekgScene"
-            prefHeight="42.0" prefWidth="142.0" text="EKG"/>
-    <Label layoutX="33.0" layoutY="37.0" prefHeight="20.0" prefWidth="70.0" text="Patient ID:"/>
-    <TextArea layoutX="352.0" layoutY="78.0" prefHeight="247.0" prefWidth="200.0" promptText="Kommentar:"/>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javaFx.AppGUIController">
+    <Label layoutX="479.0" layoutY="6.0" text="Date: XX/XX/XXXX" />
+    <Button fx:id="pulsScene" layoutX="47.0" layoutY="212.0" mnemonicParsing="false" onAction="#pulsScene" prefHeight="42.0" prefWidth="142.0" text="Puls" />
+    <Button fx:id="logIn" layoutX="14.0" layoutY="359.0" mnemonicParsing="false" onAction="#LogIn" text="Back" />
+    <Button fx:id="ekgScene" layoutX="47.0" layoutY="131.0" mnemonicParsing="false" onAction="#ekgScene" prefHeight="42.0" prefWidth="142.0" text="EKG" />
+    <Label layoutX="33.0" layoutY="37.0" text="Patient ID: XXXX" />
+    <TextArea layoutX="352.0" layoutY="78.0" prefHeight="247.0" prefWidth="200.0" promptText="Kommentar:" />
 </AnchorPane>
