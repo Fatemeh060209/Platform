@@ -60,7 +60,8 @@ public class LoadGUIController {
         List<PulsDTO> pulsDTOS = pulsDAO.load(idPulsField.getText());
         StringBuilder text = new StringBuilder();
         for (PulsDTO pulsDTO : pulsDTOS) {
-            text.append("ID: ").append(pulsDTO.getPatient_id()).append(" , Time: ").append(pulsDTO.getPuls_time()).append(" , Puls: ").append(pulsDTO.getPuls_measurements()).append("\r\n");
+            text.append("ID: ").append(pulsDTO.getPatient_id()).append(" , Time: ").append(pulsDTO.getPuls_time())
+                    .append(" , Puls: ").append(pulsDTO.getPuls_measurements()).append("\r\n");
         }
         plusLoad.setText(text.toString());
     }

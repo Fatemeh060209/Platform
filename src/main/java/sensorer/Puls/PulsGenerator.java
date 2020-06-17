@@ -20,7 +20,6 @@ public class PulsGenerator implements PulsObservable, Runnable {
             pulsDTO.setPuls_time(new Timestamp(System.currentTimeMillis()));
             if (observer != null) {
                 observer.PulsNotify(pulsDTO);
-
             }
             try {
                 Thread.sleep(1500);

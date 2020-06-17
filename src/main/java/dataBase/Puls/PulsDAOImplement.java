@@ -9,9 +9,9 @@ import java.util.List;
 public class PulsDAOImplement implements PulsDAO {
 
     public void save(PulsDTO pulsDTO) {
-        Connection conn = Connector.getConn();
         try {
-            PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO PULS (Patient_id, Puls_measurements, Puls_time) VALUES (?,?,?)");
+            PreparedStatement preparedStatement = Connector.getConn().prepareStatement("INSERT INTO PULS" +
+                    " (Patient_id, Puls_measurements, Puls_time) VALUES (?,?,?)");
             preparedStatement.setInt(1, pulsDTO.getPatient_id());
             preparedStatement.setDouble(2, pulsDTO.getPuls_measurements());
             preparedStatement.setTimestamp(3, pulsDTO.getPuls_time());
@@ -36,7 +36,8 @@ public class PulsDAOImplement implements PulsDAO {
     @Override
     public List<PulsDTO> load(String cpr) {
         try {
-            PreparedStatement preparedStatement = Connector.getConn().prepareStatement("SELECT * FROM Patienter JOIN PULS AS P on Patienter.ID = P.Patient_id WHERE Cpr=?");
+            PreparedStatement preparedStatement = Connector.getConn().prepareStatement("SELECT * FROM Patienter" +
+                    " JOIN PULS AS P on Patienter.ID = P.Patient_id WHERE Cpr=?");
             preparedStatement.setString(1, cpr);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<PulsDTO> listPuls = mapResultSetToDTOList(resultSet);
@@ -50,7 +51,8 @@ public class PulsDAOImplement implements PulsDAO {
     @Override
     public List<PulsDTO> load(String cpr, Timestamp start, Timestamp end) {
         try {
-            PreparedStatement preparedStatement = Connector.getConn().prepareStatement("SELECT * FROM Patienter JOIN PULS AS P on Patienter.ID = P.Patient_id WHERE Cpr=? AND Puls_time BETWEEN ? AND ?");
+            PreparedStatement preparedStatement = Connector.getConn().prepareStatement("SELECT * FROM Patienter" +
+                    " JOIN PULS AS P on Patienter.ID = P.Patient_id WHERE Cpr=? AND Puls_time BETWEEN ? AND ?");
             preparedStatement.setString(1, cpr);
             preparedStatement.setTimestamp(2, start);
             preparedStatement.setTimestamp(3, end);
@@ -61,5 +63,30 @@ public class PulsDAOImplement implements PulsDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void createPuls() {
+        try {
+            Statement statement = Connector.getConn().createStatement();
+            statement.executeUpdate("CREATE TABLE PULS (Patient_id INT," +
+                    "Puls_measurements DOUBLE,Puls_time timestamp,FOREIGN KEY (Patient_id) REFERENCES Patienter(ID))");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletePuls(PulsDTO pulsDTO) {
+        try {
+            PreparedStatement prepareStatement = Connector.getConn().prepareStatement("DELETE FROM PULS" +
+                    " WHERE Patient_id = ?");
+            prepareStatement.setInt(1, pulsDTO.getPatient_id());
+            prepareStatement.execute();
+            Connector.getConn().close();
+
+            Statement statement = Connector.getConn().createStatement();
+            statement.executeUpdate("DROP TABLE PULS");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

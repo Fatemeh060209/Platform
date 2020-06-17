@@ -142,7 +142,8 @@ public class AppGUIController implements PulsListener, EkgListener {
         Platform.runLater(() -> {
             pulsLabel.setText(String.valueOf(pulsDTO.getPuls_measurements()));
             StringBuilder text = new StringBuilder();
-            text.append(new StringBuilder().append("New Data! Puls: ").append(pulsDTO.getPuls_measurements()).append(" , TimeStamp: ").append(pulsDTO.getPuls_time()).append("\r\n"));
+            text.append(new StringBuilder().append("New Data! Puls: ").append(pulsDTO.getPuls_measurements())
+                    .append(" , TimeStamp: ").append(pulsDTO.getPuls_time()).append("\r\n"));
             pulsDataOutput.setText(text.toString());
         });
         pulsDTO.setPatient_id(Integer.parseInt(idPuls.getText()));

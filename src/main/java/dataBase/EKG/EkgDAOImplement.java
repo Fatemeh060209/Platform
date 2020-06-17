@@ -10,9 +10,9 @@ public class EkgDAOImplement implements EkgDAO {
 
 
     public void save(EkgDTO ekgDTO) {
-        Connection conn = Connector.getConn();
         try {
-            PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO EKG (Patient_id, EKG_voltage, EKG_time) VALUES (?,?,?)");
+            PreparedStatement preparedStatement = Connector.getConn().prepareStatement("INSERT INTO EKG" +
+                    " (Patient_id, EKG_voltage, EKG_time) VALUES (?,?,?)");
             preparedStatement.setInt(1, ekgDTO.getPatient_id());
             preparedStatement.setDouble(2, ekgDTO.getEKG_voltage());
             preparedStatement.setTimestamp(3, ekgDTO.getEKG_time());
@@ -23,10 +23,9 @@ public class EkgDAOImplement implements EkgDAO {
     }
 
     public void savebatch(List<EkgDTO> batch) {
-        Connection conn = Connector.getConn();
-        PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = conn.prepareStatement("INSERT INTO EKG (Patient_id, EKG_voltage, EKG_time) VALUES (?,?,?)");
+            PreparedStatement preparedStatement = Connector.getConn().prepareStatement("INSERT INTO EKG" +
+                    " (Patient_id, EKG_voltage, EKG_time) VALUES (?,?,?)");
             for (EkgDTO ekgDTO : batch) {
                 preparedStatement.setInt(1, ekgDTO.getPatient_id());
                 preparedStatement.setDouble(2, ekgDTO.getEKG_voltage());
@@ -54,7 +53,8 @@ public class EkgDAOImplement implements EkgDAO {
     @Override
     public List<EkgDTO> load(String cpr) {
         try {
-            PreparedStatement preparedStatement = Connector.getConn().prepareStatement("SELECT * FROM Patienter JOIN EKG AS E on Patienter.ID = E.Patient_id WHERE Cpr=?");
+            PreparedStatement preparedStatement = Connector.getConn().prepareStatement("SELECT * FROM Patienter" +
+                    " JOIN EKG AS E on Patienter.ID = E.Patient_id WHERE Cpr=?");
             preparedStatement.setString(1, cpr);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<EkgDTO> listEkg = mapResultSetToDTOList(resultSet);
@@ -68,7 +68,8 @@ public class EkgDAOImplement implements EkgDAO {
     @Override
     public List<EkgDTO> load(String cpr, Timestamp start, Timestamp end) {
         try {
-            PreparedStatement preparedStatement = Connector.getConn().prepareStatement("SELECT * FROM Patienter JOIN EKG AS E on Patienter.ID = E.Patient_id WHERE Cpr=? AND EKG_time BETWEEN ? AND ?");
+            PreparedStatement preparedStatement = Connector.getConn().prepareStatement("SELECT * FROM Patienter" +
+                    " JOIN EKG AS E on Patienter.ID = E.Patient_id WHERE Cpr=? AND EKG_time BETWEEN ? AND ?");
             preparedStatement.setString(1, cpr);
             preparedStatement.setTimestamp(2, start);
             preparedStatement.setTimestamp(3, end);
@@ -79,6 +80,31 @@ public class EkgDAOImplement implements EkgDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void createEkg() {
+        try {
+            Statement statement = Connector.getConn().createStatement();
+            statement.executeUpdate("CREATE TABLE EKG (Patient_id INT," +
+                    "EKG_voltage DOUBLE,EKG_time timestamp,FOREIGN KEY (Patient_id) REFERENCES Patienter(ID))");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteEkg(EkgDTO ekgDTO) {
+        try {
+            PreparedStatement prepareStatement = Connector.getConn().prepareStatement("DELETE FROM EKG " +
+                    "WHERE Patient_id = ?");
+            prepareStatement.setInt(1, ekgDTO.getPatient_id());
+            prepareStatement.execute();
+            Connector.getConn().close();
+
+            Statement statement = Connector.getConn().createStatement();
+            statement.executeUpdate("DROP TABLE EKG");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
