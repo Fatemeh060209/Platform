@@ -19,18 +19,19 @@ import javafx.scene.control.TextField;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
 import sensorer.EKG.EkgListener;
+import sensorer.EKG.ThreadPC;
 import sensorer.Puls.PulsGenerator;
 import sensorer.Puls.PulsListener;
-import sensorer.EKG.ThreadPC;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 public class AppGUIController implements PulsListener, EkgListener {
 
+    double x = 0;
     public Button logIn;
-    public Button patientData;// referenser til controllers fra FXML-filen
+    public Button patientData;
 
     public Button pulsScene;
     public Button pulsStart;
@@ -45,13 +46,12 @@ public class AppGUIController implements PulsListener, EkgListener {
     public Button loadEkg;
     public Button ekgScene;
     public TextField idEkg;
-    public TextArea ekgDataOutput;
     public Polyline ekgGraf;
 
-    public EkgDAO ekgDAO = new EkgDAOImplement(); // opretter en objekt af klaseem TempDAO
+    public EkgDAO ekgDAO = new EkgDAOImplement();
     public PulsDAO pulsDAO = new PulsDAOImplement();
 
-    public void ekgSampler(ActionEvent actionEvent) { // Event Driving Programming
+    public void ekgSampler(ActionEvent actionEvent) {
         ThreadPC threadPC = new ThreadPC(this);
         Thread thread = new Thread(threadPC);
         thread.start();
@@ -63,7 +63,7 @@ public class AppGUIController implements PulsListener, EkgListener {
         pulsGenerator.registerObserver(this);
     }
 
-    public void LogIn(ActionEvent actionEvent) throws IOException { // Event Driving Programming som skifter mellem scene
+    public void LogIn(ActionEvent actionEvent) throws IOException {
         Parent firstPaneLoader = FXMLLoader.load(getClass().getResource("/LogIn.fxml"));
         Scene firstScene = new Scene(firstPaneLoader);
         Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -72,8 +72,7 @@ public class AppGUIController implements PulsListener, EkgListener {
         primaryStage.show();
     }
 
-    public void patientData(ActionEvent actionEvent) throws IOException { //  Event Driving Programming,
-        // som skifter mellem scene
+    public void patientData(ActionEvent actionEvent) throws IOException {
         Parent secondPaneLoader = FXMLLoader.load(getClass().getResource("/PatientData.fxml"));
         Scene secondScene = new Scene(secondPaneLoader);
         Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -119,36 +118,36 @@ public class AppGUIController implements PulsListener, EkgListener {
     }
 
     public void EkgNotify(LinkedList<EkgDTO> ekgDTOList) {
-        // Her implemeteres interfacens metode
-        // her bliver der udskrevet løbende temperatur og tid til
-// graiskbrugergrænseflade hvis der er værdier fra sensoren + gemme data i databasen.
         Platform.runLater(() -> {
+            List<Double> ekgPoints = new LinkedList<>();
             for (int i = 0; i < ekgDTOList.size(); i++) {
                 EkgDTO ekgDTO = ekgDTOList.get(i);
-                ekgGraf.getPoints().addAll((Collection<? extends Double>) ekgDTOList.get(i));// her bliver værdien angivet som hentes fra DTO
-                String text = pulsDataOutput.getText();
-                text += "New Data! Temp:" + ekgDTO.getEKG_voltage() + " °C" + ", TimeStamp: " + ekgDTO.getEKG_time() + "\r\n";
-                pulsDataOutput.setText(text); // her bliver der oprettet en variabel/text, og tildeles hvad der skal stå
-                // i text area
-                ekgDTO.setPatient_Id(Integer.parseInt(idPuls.getText())); // værdien fra ID/textField sættes ind i setID
+                ekgPoints.add(x);
+                ekgPoints.add((1000 - ekgDTO.getEKG_voltage()) / 10);
+                ekgDTO.setPatient_id(Integer.parseInt(idEkg.getText()));
+                if (x > 1000) {
+                    x = 0;
+                    ekgGraf.getPoints().clear();
+                }
+                x++;
             }
-            ekgDAO.savebatch(ekgDTOList); // her gemmes der værdier fra TempDTO
+            ekgGraf.getPoints().addAll(ekgPoints);
+            Platform.runLater(() -> {
+                ekgDAO.savebatch(ekgDTOList);
+            });
         });
     }
 
     public void PulsNotify(PulsDTO pulsDTO) {
-        // her bliver der udskrevet løbende temperatur og tid til
-// graiskbrugergrænseflade hvis der er værdier fra sensoren + gemme data i databasen.
         Platform.runLater(() -> {
-            pulsLabel.setText(String.valueOf(pulsDTO.getPuls_measurements())); // her bliver værdien angivet som hentes fra DTO
-            String text = pulsDataOutput.getText();
-            text += "New Data! Temp:" + pulsDTO.getPuls_measurements() + " °C" + ", TimeStamp: " + pulsDTO.getPuls_time() + "\r\n";
-            pulsDataOutput.setText(text); // her bliver der oprettet en variabel/text, og tildeles hvad der skal stå
-            // i text area
+            pulsLabel.setText(String.valueOf(pulsDTO.getPuls_measurements()));
+            StringBuilder text = new StringBuilder();
+            text.append(new StringBuilder().append("New Data! Puls: ").append(pulsDTO.getPuls_measurements()).append(" , TimeStamp: ").append(pulsDTO.getPuls_time()).append("\r\n"));
+            pulsDataOutput.setText(text.toString());
         });
-        pulsDTO.setPatient_id(Integer.parseInt(idPuls.getText())); // værdien fra ID/textField sættes ind i setID
-        pulsDTO.setPuls_measurements(pulsDTO.getPuls_measurements());// Temperatur
-        pulsDTO.setPuls_time(pulsDTO.getPuls_time()); // Tid
-        pulsDAO.save(pulsDTO); // her gemmes der værdier fra TempDTO
+        pulsDTO.setPatient_id(Integer.parseInt(idPuls.getText()));
+        pulsDTO.setPuls_measurements(pulsDTO.getPuls_measurements());
+        pulsDTO.setPuls_time(pulsDTO.getPuls_time());
+        pulsDAO.save(pulsDTO);
     }
 }

@@ -4,17 +4,11 @@ import java.sql.Timestamp;
 
 public class PulsDTO {
 
-    private Timestamp Puls_time;
     private int Patient_id;
     private double Puls_measurements;
+    private Timestamp Puls_time;
 
-    public Timestamp getPuls_time() {
-        return Puls_time;
-    }
 
-    public void setPuls_time(Timestamp puls_time) {
-        this.Puls_time = puls_time;
-    }
 
     public int getPatient_id() {
         return Patient_id;
@@ -30,6 +24,14 @@ public class PulsDTO {
 
     public void setPuls_measurements(double puls_measurements) {
         this.Puls_measurements = puls_measurements;
+    }
+
+    public Timestamp getPuls_time() {
+        return Puls_time;
+    }
+
+    public void setPuls_time(Timestamp puls_time) {
+        this.Puls_time = puls_time;
     }
 }
 

@@ -25,8 +25,8 @@ public class PulsDAOImplement implements PulsDAO {
         List<PulsDTO> listPuls = new LinkedList<>();
         while (resultSet.next()) {
             PulsDTO PulsDTO = new PulsDTO();
-            PulsDTO.setPatient_id(resultSet.getInt("Patient_ID"));
-            PulsDTO.setPuls_measurements(resultSet.getDouble("Puls_Målinger"));
+            PulsDTO.setPatient_id(resultSet.getInt("Patient_id"));
+            PulsDTO.setPuls_measurements(resultSet.getDouble("Puls_measurements"));
             PulsDTO.setPuls_time(resultSet.getTimestamp("Puls_time"));
             listPuls.add(PulsDTO);
         }

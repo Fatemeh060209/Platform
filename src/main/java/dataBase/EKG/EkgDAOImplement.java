@@ -13,7 +13,7 @@ public class EkgDAOImplement implements EkgDAO {
         Connection conn = Connector.getConn();
         try {
             PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO EKG (Patient_id, EKG_voltage, EKG_time) VALUES (?,?,?)");
-            preparedStatement.setInt(1, ekgDTO.getPatient_Id());
+            preparedStatement.setInt(1, ekgDTO.getPatient_id());
             preparedStatement.setDouble(2, ekgDTO.getEKG_voltage());
             preparedStatement.setTimestamp(3, ekgDTO.getEKG_time());
             preparedStatement.execute();
@@ -28,7 +28,7 @@ public class EkgDAOImplement implements EkgDAO {
         try {
             preparedStatement = conn.prepareStatement("INSERT INTO EKG (Patient_id, EKG_voltage, EKG_time) VALUES (?,?,?)");
             for (EkgDTO ekgDTO : batch) {
-                preparedStatement.setInt(1, ekgDTO.getPatient_Id());
+                preparedStatement.setInt(1, ekgDTO.getPatient_id());
                 preparedStatement.setDouble(2, ekgDTO.getEKG_voltage());
                 preparedStatement.setTimestamp(3, ekgDTO.getEKG_time());
                 preparedStatement.addBatch();
@@ -43,7 +43,7 @@ public class EkgDAOImplement implements EkgDAO {
         List<EkgDTO> listEkg = new LinkedList<>();
         while (resultSet.next()) {
             EkgDTO ekgDTO = new EkgDTO();
-            ekgDTO.setPatient_Id(resultSet.getInt("Patient_id"));
+            ekgDTO.setPatient_id(resultSet.getInt("Patient_id"));
             ekgDTO.setEKG_voltage(resultSet.getDouble("EKG_voltage"));
             ekgDTO.setEKG_time(resultSet.getTimestamp("EKG_time"));
             listEkg.add(ekgDTO);

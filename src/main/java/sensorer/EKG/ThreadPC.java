@@ -8,12 +8,8 @@ public class ThreadPC implements Runnable {
     }
 
     public void run() {
-        // Object of a class that has both produce()
-        // and consume() methods
         final PC pc = new PC();
         pc.registerObserver(this.listener);
-
-        // Create producer thread
         Thread t1 = new Thread(() -> {
             try {
                 pc.produce();
@@ -21,8 +17,6 @@ public class ThreadPC implements Runnable {
                 e.printStackTrace();
             }
         });
-
-        // Create consumer thread
         Thread t2 = new Thread(() -> {
             try {
                 pc.consume();
@@ -30,11 +24,8 @@ public class ThreadPC implements Runnable {
                 e.printStackTrace();
             }
         });
-
-        // Start both threads
         t1.start();
         t2.start();
-        // t1 finishes before t2
         try {
             t1.join();
             t2.join();

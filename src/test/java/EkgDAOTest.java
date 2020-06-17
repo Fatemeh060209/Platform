@@ -11,7 +11,7 @@ class EkgDAOTest {
         EkgDTO ekgDTO = new EkgDTO();
         ekgDTO.setEKG_time(new Timestamp(System.currentTimeMillis()));
         ekgDTO.setEKG_voltage(999.99);
-        ekgDTO.setPatient_Id(1001);
+        ekgDTO.setPatient_id(1001);
         EkgDAOImplement ekgDAOImplement = new EkgDAOImplement();
         ekgDAOImplement.save(ekgDTO);
         List<EkgDTO> load = ekgDAOImplement.load("010380-0410");

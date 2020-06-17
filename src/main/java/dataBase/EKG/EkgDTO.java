@@ -4,24 +4,16 @@ import java.sql.Timestamp;
 
 public class EkgDTO {
 
-    private Timestamp EKG_time;
-    private int Patient_Id;
+    private int Patient_id;
     private double EKG_voltage;
+    private Timestamp EKG_time;
 
-    public Timestamp getEKG_time() {
-        return EKG_time;
+    public int getPatient_id() {
+        return Patient_id;
     }
 
-    public void setEKG_time(Timestamp EKG_time) {
-        this.EKG_time = EKG_time;
-    }
-
-    public int getPatient_Id() {
-        return Patient_Id;
-    }
-
-    public void setPatient_Id(int patient_Id) {
-        this.Patient_Id = patient_Id;
+    public void setPatient_id(int patient_id) {
+        this.Patient_id = patient_id;
     }
 
     public double getEKG_voltage() {
@@ -30,6 +22,14 @@ public class EkgDTO {
 
     public void setEKG_voltage(double EKG_voltage) {
         this.EKG_voltage = EKG_voltage;
+    }
+
+    public Timestamp getEKG_time() {
+        return EKG_time;
+    }
+
+    public void setEKG_time(Timestamp EKG_time) {
+        this.EKG_time = EKG_time;
     }
 }
 

@@ -7,41 +7,45 @@ import jssc.SerialPortList;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class SerialportConnector {
     private SerialPort serialPort = null;
     private String result = null;
 
     public SerialportConnector(int portNummer) {
-        //konstruktør oprettes
-        String[] portnames = null;//oprettelse af StringArray
+        String[] portnames = null;
         try {
-            portnames = SerialPortList.getPortNames();//her hentes navnene til portene der er tilkoblet computeren
-            serialPort = new SerialPort(portnames[portNummer]);//objektet serialPort tildeles den første port
-            serialPort.openPort();//porten åbnes
-            serialPort.setRTS(true);//klar til at sende(ReadyToSend = true)
-            serialPort.setDTR(true);//klar til at modtage(DataToReceive = true)
-            serialPort.setParams(115200, 8, 1, SerialPort.PARITY_NONE);//parametre bestemmes
-            serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);//kontrolere flowet af data
+            portnames = SerialPortList.getPortNames();
+            serialPort = new SerialPort(portnames[portNummer]);
+            serialPort.openPort();
+            serialPort.setRTS(true);
+            serialPort.setDTR(true);
+            serialPort.setParams(115200, 8, 1, SerialPort.PARITY_NONE);
+            serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
 
-    public List<EkgDTO> getData() {//metoden oprettes
+    public List<EkgDTO> getData() {
         try {
-            if (serialPort.getInputBufferBytesCount() >= 12) {//kontrolstruktur
-                result = serialPort.readString();//strengen aflæses og tildeles result
+            if (serialPort.getInputBufferBytesCount() >= 100) {
+                result = serialPort.readString();
                 String[] rawValues;
-                if (result != null && result.charAt(result.length() - 1) == ' ') {//result kontroleres
-                    result = result.substring(0, result.length() - 1);//her fjernes det sidste index(#)
-                    rawValues = result.split(" ");//nu splittes strengen og gemmes i et array
+                if (result != null && result.charAt(result.length() - 1) == ' ') {
+                    result = result.substring(0, result.length() - 1);
+                    rawValues = result.split(" ");
                     List<EkgDTO> values = new LinkedList<>();
                     for (int i = 0; i < rawValues.length; i++) {
-                        EkgDTO ekgDTO = new EkgDTO();
-                        ekgDTO.setEKG_voltage(Integer.parseInt(rawValues[i]));
-                        ekgDTO.setEKG_time(new Timestamp(System.currentTimeMillis()));
-                        values.add(ekgDTO);
+                        if (!Objects.equals(rawValues[i], "")) {
+                            EkgDTO ekgDTO = new EkgDTO();
+                            ekgDTO.setEKG_voltage(Double.parseDouble(rawValues[i]));
+                            if (ekgDTO.getEKG_voltage() < 10000 && ekgDTO.getEKG_voltage() > -10000) {
+                                ekgDTO.setEKG_time(new Timestamp(System.currentTimeMillis()));
+                                values.add(ekgDTO);
+                            }
+                        }
                     }
                     return values;
                 }
@@ -49,6 +53,6 @@ public class SerialportConnector {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;//returnArray returneres
+        return null;
     }
 }
