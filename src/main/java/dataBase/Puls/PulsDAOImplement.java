@@ -65,28 +65,5 @@ public class PulsDAOImplement implements PulsDAO {
         return null;
     }
 
-    public void createPuls() {
-        try {
-            Statement statement = Connector.getConn().createStatement();
-            statement.executeUpdate("CREATE TABLE PULS (Patient_id INT," +
-                    "Puls_measurements DOUBLE,Puls_time timestamp,FOREIGN KEY (Patient_id) REFERENCES Patienter(ID))");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void deletePuls(PulsDTO pulsDTO) {
-        try {
-            PreparedStatement prepareStatement = Connector.getConn().prepareStatement("DELETE FROM PULS" +
-                    " WHERE Patient_id = ?");
-            prepareStatement.setInt(1, pulsDTO.getPatient_id());
-            prepareStatement.execute();
-            Connector.getConn().close();
-
-            Statement statement = Connector.getConn().createStatement();
-            statement.executeUpdate("DROP TABLE PULS");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

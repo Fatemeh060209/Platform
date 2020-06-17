@@ -125,11 +125,11 @@ public class AppGUIController implements PulsListener, EkgListener {
                 ekgPoints.add(x);
                 ekgPoints.add((1000 - ekgDTO.getEKG_voltage()) / 10);
                 ekgDTO.setPatient_id(Integer.parseInt(idEkg.getText()));
-                if (x > 1000) {
-                    x = 0;
-                    ekgGraf.getPoints().clear();
-                }
                 x++;
+            }
+            if (x > 360) {
+                x = 0;
+                ekgGraf.getPoints().clear();
             }
             ekgGraf.getPoints().addAll(ekgPoints);
             Platform.runLater(() -> {

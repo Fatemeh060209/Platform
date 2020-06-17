@@ -10,6 +10,6 @@
     <Button fx:id="loadEkg" layoutX="519.0" layoutY="359.0" mnemonicParsing="false" onAction="#loadEkg" text="Show log" />
     <TextField fx:id="idEkg" layoutX="140.0" layoutY="67.0" prefHeight="27.0" prefWidth="107.0" />
     <Label layoutX="30.0" layoutY="72.0" text="Type Patient's ID:" />
-    <Polyline fx:id="ekgGraf" layoutX="65.0" layoutY="200.0" strokeType="INSIDE" />
+    <Polyline fx:id="ekgGraf" layoutY="200.0" strokeType="INSIDE" />
     <Label layoutX="479.0" layoutY="6.0" text="Date: XX/XX/XXXX" />
 </AnchorPane>

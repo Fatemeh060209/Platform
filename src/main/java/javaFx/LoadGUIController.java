@@ -32,24 +32,17 @@ public class LoadGUIController {
     public Button ekgBack;
     public Button ekgSearch;
     public TextField idEkgField;
-    public TextArea ekgLoad;
     public Polyline ekgGraf;
-    double x = 0;
 
     public void LoadEKGData(ActionEvent actionEvent) {
         Platform.runLater(() -> {
             EkgDAO ekgDAO = new EkgDAOImplement();
             LinkedList<Double> ekgPoints = new LinkedList<>();
-            EkgDTO ekgDTO = new EkgDTO();
             List<EkgDTO> ekgDTOS = ekgDAO.load(idEkgField.getText());
+            ekgGraf.getPoints().clear();
             for (int i = 0; i < ekgDTOS.size(); i++) {
-                ekgPoints.add(x);
-                ekgPoints.add((1000 - ekgDTO.getEKG_voltage()) / 10);
-                if (x > 1000) {
-                    x = 0;
-                    ekgGraf.getPoints().clear();
-                }
-                x++;
+                ekgPoints.add(Double.valueOf(i));
+                ekgPoints.add((1000 - ekgDTOS.get(i).getEKG_voltage()) / 10);
             }
             ekgGraf.getPoints().addAll(ekgPoints);
         });

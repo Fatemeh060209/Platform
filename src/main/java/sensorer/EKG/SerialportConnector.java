@@ -30,7 +30,7 @@ public class SerialportConnector {
 
     public List<EkgDTO> getData() {
         try {
-            if (serialPort.getInputBufferBytesCount() >= 100) {
+            if (serialPort.getInputBufferBytesCount() >= 10) {
                 result = serialPort.readString();
                 String[] rawValues;
                 if (result != null && result.charAt(result.length() - 1) == ' ') {

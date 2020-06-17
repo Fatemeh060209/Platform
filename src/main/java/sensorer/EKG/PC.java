@@ -8,7 +8,7 @@ import java.util.List;
 public class PC implements EkgObservable {
     private SerialportConnector serialportConnector = new SerialportConnector(0);
     LinkedList<EkgDTO> ekgDTOS = new LinkedList<>();
-    int capacity = 200;
+    int capacity = 100;
     private EkgListener ekgListener;
 
     public void produce() throws InterruptedException {
@@ -26,7 +26,6 @@ public class PC implements EkgObservable {
                 }
                 notify();
             }
-            Thread.sleep(10);
         }
     }
 
@@ -34,7 +33,7 @@ public class PC implements EkgObservable {
         while (true) {
             LinkedList<EkgDTO> consumedList;
             synchronized (this) {
-                while (ekgDTOS.size() < 50)
+                while (ekgDTOS.size() < 20)
                     wait();
                 consumedList = ekgDTOS;
                 ekgDTOS = new LinkedList<>();
@@ -46,7 +45,6 @@ public class PC implements EkgObservable {
             /*for (EkgDTO i : consumedList) {
                 System.out.println("GUInummer " + i.getEKG_voltage());
             }*/
-            Thread.sleep(10);
         }
     }
 
