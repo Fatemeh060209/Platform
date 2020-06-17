@@ -52,7 +52,7 @@ public class LoadGUIController {
         // hentes fra laode
         String text = "";
         for (PulsDTO pulsDTO : pulsDTOS) { // for hvert element i listen pulsDTOS tilføjes elements pulsDTO til stringen text
-            text += "ID: " + pulsDTO.getPatient_ID() + ", Time: " + pulsDTO.getPuls_time() + ", Puls: " + pulsDTO.getPuls_Measurements() + "\r\n";
+            text += "ID: " + pulsDTO.getPatient_id() + ", Time: " + pulsDTO.getPuls_time() + ", Puls: " + pulsDTO.getPuls_measurements() + "\r\n";
         }
         plusLoad.setText(text); // indsætter i text area
     }

@@ -17,7 +17,7 @@ public class PulsGenerator implements PulsObservable, Runnable {
             double max = 220;
             double value = (Math.random() * ((max - min)) + min);
             double puls = (value * 4.0 / 50.0) + 24.0;
-            pulsDTO.setPuls_Measurements(puls);
+            pulsDTO.setPuls_measurements(puls);
             pulsDTO.setPuls_time(new Timestamp(System.currentTimeMillis()));
             if (observer != null) { // når varibalen observeren ikke er null, dvs når der kommer målinger
                 observer.PulsNotify(pulsDTO); // der bliver informeret i AppGUIcontroller, at der er kommet noget

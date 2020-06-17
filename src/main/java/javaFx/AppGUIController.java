@@ -140,14 +140,14 @@ public class AppGUIController implements PulsListener, EkgListener {
         // her bliver der udskrevet løbende temperatur og tid til
 // graiskbrugergrænseflade hvis der er værdier fra sensoren + gemme data i databasen.
         Platform.runLater(() -> {
-            pulsLabel.setText(String.valueOf(pulsDTO.getPuls_Measurements())); // her bliver værdien angivet som hentes fra DTO
+            pulsLabel.setText(String.valueOf(pulsDTO.getPuls_measurements())); // her bliver værdien angivet som hentes fra DTO
             String text = pulsDataOutput.getText();
-            text += "New Data! Temp:" + pulsDTO.getPuls_Measurements() + " °C" + ", TimeStamp: " + pulsDTO.getPuls_time() + "\r\n";
+            text += "New Data! Temp:" + pulsDTO.getPuls_measurements() + " °C" + ", TimeStamp: " + pulsDTO.getPuls_time() + "\r\n";
             pulsDataOutput.setText(text); // her bliver der oprettet en variabel/text, og tildeles hvad der skal stå
             // i text area
         });
-        pulsDTO.setPatient_ID(Integer.parseInt(idPuls.getText())); // værdien fra ID/textField sættes ind i setID
-        pulsDTO.setPuls_Measurements(pulsDTO.getPuls_Measurements());// Temperatur
+        pulsDTO.setPatient_id(Integer.parseInt(idPuls.getText())); // værdien fra ID/textField sættes ind i setID
+        pulsDTO.setPuls_measurements(pulsDTO.getPuls_measurements());// Temperatur
         pulsDTO.setPuls_time(pulsDTO.getPuls_time()); // Tid
         pulsDAO.save(pulsDTO); // her gemmes der værdier fra TempDTO
     }

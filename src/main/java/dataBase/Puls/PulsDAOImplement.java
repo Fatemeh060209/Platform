@@ -10,11 +10,10 @@ public class PulsDAOImplement implements PulsDAO {
 
     public void save(PulsDTO pulsDTO) {
         Connection conn = Connector.getConn();
-
         try {
-            PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO EKG (Patient_ID, Puls_Målinger, Puls_time) VALUES (?,?,?)");
-            preparedStatement.setInt(1, pulsDTO.getPatient_ID());
-            preparedStatement.setDouble(2, pulsDTO.getPuls_Measurements());
+            PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO PULS (Patient_id, Puls_measurements, Puls_time) VALUES (?,?,?)");
+            preparedStatement.setInt(1, pulsDTO.getPatient_id());
+            preparedStatement.setDouble(2, pulsDTO.getPuls_measurements());
             preparedStatement.setTimestamp(3, pulsDTO.getPuls_time());
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -26,8 +25,8 @@ public class PulsDAOImplement implements PulsDAO {
         List<PulsDTO> listPuls = new LinkedList<>();
         while (resultSet.next()) {
             PulsDTO PulsDTO = new PulsDTO();
-            PulsDTO.setPatient_ID(resultSet.getInt("Patient_ID"));
-            PulsDTO.setPuls_Measurements(resultSet.getDouble("Puls_Målinger"));
+            PulsDTO.setPatient_id(resultSet.getInt("Patient_ID"));
+            PulsDTO.setPuls_measurements(resultSet.getDouble("Puls_Målinger"));
             PulsDTO.setPuls_time(resultSet.getTimestamp("Puls_time"));
             listPuls.add(PulsDTO);
         }

@@ -5,8 +5,8 @@ import java.sql.Timestamp;
 public class PulsDTO {
 
     private Timestamp Puls_time;
-    private int Patient_ID;
-    private double Puls_Measurements;
+    private int Patient_id;
+    private double Puls_measurements;
 
     public Timestamp getPuls_time() {
         return Puls_time;
@@ -16,20 +16,20 @@ public class PulsDTO {
         this.Puls_time = puls_time;
     }
 
-    public int getPatient_ID() {
-        return Patient_ID;
+    public int getPatient_id() {
+        return Patient_id;
     }
 
-    public void setPatient_ID(int patient_ID) {
-        this.Patient_ID = patient_ID;
+    public void setPatient_id(int patient_id) {
+        this.Patient_id = patient_id;
     }
 
-    public double getPuls_Measurements() {
-        return Puls_Measurements;
+    public double getPuls_measurements() {
+        return Puls_measurements;
     }
 
-    public void setPuls_Measurements(double puls_Measurements) {
-        this.Puls_Measurements = puls_Measurements;
+    public void setPuls_measurements(double puls_measurements) {
+        this.Puls_measurements = puls_measurements;
     }
 }
 
