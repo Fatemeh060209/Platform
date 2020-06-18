@@ -30,7 +30,7 @@ public class SerialportConnector {
 
     public List<EkgDTO> getData() {
         try {
-            if (serialPort.getInputBufferBytesCount() >= 10) {
+            if (serialPort.getInputBufferBytesCount() >= 11) {
                 result = serialPort.readString();
                 String[] rawValues;
                 if (result != null && result.charAt(result.length() - 1) == ' ') {
@@ -41,7 +41,7 @@ public class SerialportConnector {
                         if (!Objects.equals(rawValues[i], "")) {
                             EkgDTO ekgDTO = new EkgDTO();
                             ekgDTO.setEKG_voltage(Double.parseDouble(rawValues[i]));
-                            if (ekgDTO.getEKG_voltage() < 10000 && ekgDTO.getEKG_voltage() > -10000) {
+                            if (ekgDTO.getEKG_voltage() < 2048 && ekgDTO.getEKG_voltage() > -2048) {
                                 ekgDTO.setEKG_time(new Timestamp(System.currentTimeMillis()));
                                 values.add(ekgDTO);
                             }

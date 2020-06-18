@@ -42,7 +42,7 @@ public class LoadGUIController {
             ekgGraf.getPoints().clear();
             for (int i = 0; i < ekgDTOS.size(); i++) {
                 ekgPoints.add(Double.valueOf(i));
-                ekgPoints.add((1000 - ekgDTOS.get(i).getEKG_voltage()) / 10);
+                ekgPoints.add((1500 - ekgDTOS.get(i).getEKG_voltage()) / 10);
             }
             ekgGraf.getPoints().addAll(ekgPoints);
         });

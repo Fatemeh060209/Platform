@@ -21,6 +21,16 @@ public class Connector {
         }
         return conn;
     }
+
+    public static void colseConn() {
+        try {
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 }
 
 

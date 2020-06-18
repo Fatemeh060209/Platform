@@ -118,24 +118,25 @@ public class AppGUIController implements PulsListener, EkgListener {
     }
 
     public void EkgNotify(LinkedList<EkgDTO> ekgDTOList) {
+
         Platform.runLater(() -> {
             List<Double> ekgPoints = new LinkedList<>();
             for (int i = 0; i < ekgDTOList.size(); i++) {
                 EkgDTO ekgDTO = ekgDTOList.get(i);
                 ekgPoints.add(x);
-                ekgPoints.add((1000 - ekgDTO.getEKG_voltage()) / 10);
+                ekgPoints.add((1500 - ekgDTO.getEKG_voltage()) / 10);
                 ekgDTO.setPatient_id(Integer.parseInt(idEkg.getText()));
                 x++;
             }
-            if (x > 360) {
+            if (x > 540) {
                 x = 0;
                 ekgGraf.getPoints().clear();
             }
             ekgGraf.getPoints().addAll(ekgPoints);
-            Platform.runLater(() -> {
-                ekgDAO.savebatch(ekgDTOList);
-            });
         });
+        new Thread(() -> {
+            ekgDAO.savebatch(ekgDTOList);
+        }).start();
     }
 
     public void PulsNotify(PulsDTO pulsDTO) {

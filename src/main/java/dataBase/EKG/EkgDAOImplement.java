@@ -54,7 +54,7 @@ public class EkgDAOImplement implements EkgDAO {
     public List<EkgDTO> load(String cpr) {
         try {
             PreparedStatement preparedStatement = Connector.getConn().prepareStatement("SELECT * FROM Patienter" +
-                    " JOIN EKG AS E on Patienter.ID = E.Patient_id WHERE Cpr=? LIMIT 1000");
+                    " JOIN EKG AS E on Patienter.ID = E.Patient_id WHERE Cpr=? LIMIT 540");
             preparedStatement.setString(1, cpr);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<EkgDTO> listEkg = mapResultSetToDTOList(resultSet);
