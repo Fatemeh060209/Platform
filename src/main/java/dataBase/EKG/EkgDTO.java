@@ -31,6 +31,11 @@ public class EkgDTO {
     public void setEKG_time(Timestamp EKG_time) {
         this.EKG_time = EKG_time;
     }
+
+    public boolean equals(EkgDTO ekgDTO) {
+        return this.Patient_id == ekgDTO.Patient_id && this.EKG_voltage == ekgDTO.EKG_voltage
+                && this.EKG_time == ekgDTO.EKG_time;
+    }
 }
 
 

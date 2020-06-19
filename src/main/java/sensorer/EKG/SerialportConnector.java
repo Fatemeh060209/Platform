@@ -12,6 +12,7 @@ import java.util.Objects;
 public class SerialportConnector {
     private SerialPort serialPort = null;
     private String result = null;
+    private String bufferString = "";
 
     public SerialportConnector(int portNummer) {
         String[] portnames = null;
@@ -32,6 +33,10 @@ public class SerialportConnector {
         try {
             if (serialPort.getInputBufferBytesCount() >= 11) {
                 result = serialPort.readString();
+                bufferString += result;
+                int i1 = bufferString.lastIndexOf(' ');
+                result = bufferString.substring(0, i1);
+                bufferString = bufferString.substring(i1);
                 String[] rawValues;
                 if (result != null && result.charAt(result.length() - 1) == ' ') {
                     result = result.substring(0, result.length() - 1);
