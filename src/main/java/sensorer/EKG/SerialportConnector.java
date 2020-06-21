@@ -34,9 +34,9 @@ public class SerialportConnector {
             if (serialPort.getInputBufferBytesCount() >= 11) {
                 result = serialPort.readString();
                 bufferString += result;
-                int i1 = bufferString.lastIndexOf(' ');
-                result = bufferString.substring(0, i1);
-                bufferString = bufferString.substring(i1);
+                int lastIndex = bufferString.lastIndexOf(' ');
+                result = bufferString.substring(0, lastIndex);
+                bufferString = bufferString.substring(lastIndex);
                 String[] rawValues;
                 if (result != null && result.charAt(result.length() - 1) == ' ') {
                     result = result.substring(0, result.length() - 1);

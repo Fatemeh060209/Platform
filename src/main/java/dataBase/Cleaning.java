@@ -30,7 +30,7 @@ public class Cleaning {
         try {
             Statement statement = Connector.getConn().createStatement();
             statement.executeUpdate("CREATE TABLE PULS (Patient_id INT," +
-                    "Puls_measurements DOUBLE,Puls_time timestamp,FOREIGN KEY (Patient_id) REFERENCES Patienter(ID))");
+                    "Puls_measurements DOUBLE,Puls_time timestamp(3),FOREIGN KEY (Patient_id) REFERENCES Patienter(ID))");
             Connector.getConn().close();
         } catch (SQLException e) {
             e.printStackTrace();
