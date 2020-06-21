@@ -1,13 +1,10 @@
 package dataBase.Puls;
 
 import dataBase.Cleaning;
-import dataBase.EKG.EkgDAOImplement;
-import dataBase.EKG.EkgDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
-import java.util.LinkedList;
 import java.util.List;
 
 class PulsDAOImplementTest {
