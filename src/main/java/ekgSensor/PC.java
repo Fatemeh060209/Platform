@@ -1,4 +1,4 @@
-package sensorer.EKG;
+package ekgSensor;
 
 import dataBase.EKG.EkgDTO;
 

@@ -6,6 +6,8 @@ import dataBase.EKG.EkgDTO;
 import dataBase.Puls.PulsDAO;
 import dataBase.Puls.PulsDAOImplement;
 import dataBase.Puls.PulsDTO;
+import ekgSensor.EkgListener;
+import ekgSensor.ThreadPC;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -14,32 +16,23 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
-import sensorer.EKG.EkgListener;
-import sensorer.EKG.ThreadPC;
-import sensorer.Puls.PulsGenerator;
-import sensorer.Puls.PulsListener;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AppGUIController implements PulsListener, EkgListener {
+public class AppGUIController implements EkgListener {
+
 
     double x = 0;
     public Button logIn;
     public Button patientData;
 
-    public Button pulsScene;
-    public Button pulsStart;
-    public Button loadPuls;
-    public Button backPuls;
     public Label pulsLabel;
-    public TextField idPuls;
-    public TextArea pulsDataOutput;
+    public Button pulsLoad;
 
     public Button ekgStart;
     public Button backEkg;
@@ -55,12 +48,6 @@ public class AppGUIController implements PulsListener, EkgListener {
         ThreadPC threadPC = new ThreadPC(this);
         Thread thread = new Thread(threadPC);
         thread.start();
-    }
-
-    public void pulsSampler(ActionEvent actionEvent) {
-        PulsGenerator pulsGenerator = new PulsGenerator();
-        new Thread(pulsGenerator).start();
-        pulsGenerator.registerObserver(this);
     }
 
     public void LogIn(ActionEvent actionEvent) throws IOException {
@@ -90,29 +77,20 @@ public class AppGUIController implements PulsListener, EkgListener {
         primaryStage.show();
     }
 
-    public void pulsScene(ActionEvent actionEvent) throws IOException {
-        Parent fourthPaneLoader = FXMLLoader.load(getClass().getResource("/Puls.fxml"));
+    public void loadEkg(ActionEvent actionEvent) throws IOException {
+        Parent fourthPaneLoader = FXMLLoader.load(getClass().getResource("/EKGLoad.fxml"));
         Scene fourthScene = new Scene(fourthPaneLoader);
         Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         primaryStage.setScene(fourthScene);
-        primaryStage.setTitle("Puls");
-        primaryStage.show();
-    }
-
-    public void loadEkg(ActionEvent actionEvent) throws IOException {
-        Parent fifthPaneLoader = FXMLLoader.load(getClass().getResource("/EKGLoad.fxml"));
-        Scene fifthScene = new Scene(fifthPaneLoader);
-        Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        primaryStage.setScene(fifthScene);
         primaryStage.setTitle("EKG Data Base");
         primaryStage.show();
     }
 
     public void loadPuls(ActionEvent actionEvent) throws IOException {
-        Parent sixthPaneLoader = FXMLLoader.load(getClass().getResource("/PulsLoad.fxml"));
-        Scene sixthScene = new Scene(sixthPaneLoader);
+        Parent fifthPaneLoader = FXMLLoader.load(getClass().getResource("/PulsLoad.fxml"));
+        Scene fifthScene = new Scene(fifthPaneLoader);
         Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        primaryStage.setScene(sixthScene);
+        primaryStage.setScene(fifthScene);
         primaryStage.setTitle("Puls Data Base");
         primaryStage.show();
     }
@@ -128,7 +106,10 @@ public class AppGUIController implements PulsListener, EkgListener {
                 ekgDTO.setPatient_id(Integer.parseInt(idEkg.getText()));
                 x++;
             }
-            if (x > 540) {
+            if (x >= 540) {
+                for (int i = 0; i < ekgDTOList.size(); i++) {
+                    calculatePuls(ekgDTOList.get(i).getEKG_voltage());
+                }
                 x = 0;
                 ekgGraf.getPoints().clear();
             }
@@ -139,17 +120,40 @@ public class AppGUIController implements PulsListener, EkgListener {
         }).start();
     }
 
-    public void PulsNotify(PulsDTO pulsDTO) {
-        Platform.runLater(() -> {
-            pulsLabel.setText(String.valueOf(pulsDTO.getPuls_measurements()));
-            StringBuilder text = new StringBuilder();
-            text.append(new StringBuilder().append("New Data! Puls: ").append(pulsDTO.getPuls_measurements())
-                    .append(" , TimeStamp: ").append(pulsDTO.getPuls_time()).append("\r\n"));
-            pulsDataOutput.setText(text.toString());
-        });
-        pulsDTO.setPatient_id(Integer.parseInt(idPuls.getText()));
-        pulsDTO.setPuls_measurements(pulsDTO.getPuls_measurements());
-        pulsDTO.setPuls_time(pulsDTO.getPuls_time());
-        pulsDAO.save(pulsDTO);
+    private void calculatePuls(double ekgPoints) {
+
+        double avg = 0;
+        double beats = 0;
+        double max = Double.MIN_VALUE;
+        double min = Double.MAX_VALUE;
+        for (int i = 1; i < ekgPoints.size(); i += 2) {
+            avg += ekgPoints.get(i) / (ekgPoints.size() / 2);
+            if (ekgPoints.get(i) < min) {
+                min = ekgPoints.get(i);
+            }
+            if (ekgPoints.get(i) > max) {
+                max = ekgPoints.get(i);
+            }
+            avg = 0.2 * min + 0.8 * max;
+        }
+        boolean alreadyCounted = true;
+        for (int i = 1; i < ekgPoints.size(); i += 2) {
+            if (ekgPoints.get(i) > avg) {
+                if (!alreadyCounted) {
+                    beats++;
+                    alreadyCounted = true;
+                }
+            } else {
+                alreadyCounted = false;
+            }
+        }
+        double bpm = beats * 45;
+        PulsDTO pulsDTO = new PulsDTO();
+        //pulsDTO.setPatient_id(Integer.parseInt(idEkg.getText()));
+        pulsDTO.setPuls_measurements(bpm);
+        //pulsDTO.setPuls_time(new Timestamp(System.currentTimeMillis()));
+        pulsLabel.setText(String.valueOf(pulsDTO.getPuls_measurements()));
+        //pulsDAO.save(pulsDTO);
+        System.out.println("bpm = " + bpm);
     }
 }

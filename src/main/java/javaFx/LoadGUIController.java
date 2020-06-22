@@ -59,21 +59,21 @@ public class LoadGUIController {
         plusLoad.setText(text.toString());
     }
 
+    public void patientData(ActionEvent actionEvent) throws IOException {
+        Parent secondPaneLoader = FXMLLoader.load(getClass().getResource("/PatientData.fxml"));
+        Scene secondScene = new Scene(secondPaneLoader);
+        Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        primaryStage.setScene(secondScene);
+        primaryStage.setTitle("Patient's Data");
+        primaryStage.show();
+    }
+
     public void ekgScene(ActionEvent actionEvent) throws IOException {
         Parent thirdPaneLoader = FXMLLoader.load(getClass().getResource("/EKG.fxml"));
         Scene thirdScene = new Scene(thirdPaneLoader);
         Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         primaryStage.setScene(thirdScene);
         primaryStage.setTitle("EKG");
-        primaryStage.show();
-    }
-
-    public void pulsScene(ActionEvent actionEvent) throws IOException {
-        Parent fourthPaneLoader = FXMLLoader.load(getClass().getResource("/Puls.fxml"));
-        Scene fourthScene = new Scene(fourthPaneLoader);
-        Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        primaryStage.setScene(fourthScene);
-        primaryStage.setTitle("Puls");
         primaryStage.show();
     }
 }

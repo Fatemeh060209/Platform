@@ -1,4 +1,4 @@
-package sensorer.EKG;
+package ekgSensor;
 
 public class ThreadPC implements Runnable {
     private EkgListener listener;
