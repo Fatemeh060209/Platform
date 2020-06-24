@@ -14,11 +14,11 @@ public class SerialportConnector {
     private String result = null;
     private String bufferString = "";
 
-    public SerialportConnector(int portNummer) {
+    public SerialportConnector(int portNumber) {
         String[] portnames = null;
         try {
             portnames = SerialPortList.getPortNames();
-            serialPort = new SerialPort(portnames[portNummer]);
+            serialPort = new SerialPort(portnames[portNumber]);
             serialPort.openPort();
             serialPort.setRTS(true);
             serialPort.setDTR(true);
@@ -56,30 +56,5 @@ public class SerialportConnector {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public boolean equals() {
-        try {
-            if (serialPort.getInputBufferBytesCount() >= 11) {
-                result = serialPort.readString();
-                bufferString += result;
-                int lastIndex = bufferString.lastIndexOf(' ');
-                result = bufferString.substring(0, lastIndex);
-                bufferString = bufferString.substring(lastIndex);
-                String[] rawValues;
-                rawValues = result.split(" ");
-                for (int i = 0; i < rawValues.length; i++) {
-                    EkgDTO ekgDTO = new EkgDTO();
-                    ekgDTO.setEKG_voltage(Double.parseDouble(rawValues[i]));
-                    if (Double.parseDouble(rawValues[i]) == ekgDTO.getEKG_voltage()) {
-                        System.out.println("The same data");
-                        return true;
-                    } else return false;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 }

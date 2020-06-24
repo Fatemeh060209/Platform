@@ -3,6 +3,8 @@ package javaFx;
 import dataBase.EKG.EkgDAO;
 import dataBase.EKG.EkgDAOImplement;
 import dataBase.EKG.EkgDTO;
+import dataBase.Patienter.PatienterDAO;
+import dataBase.Patienter.PatienterDTO;
 import dataBase.Puls.PulsDAO;
 import dataBase.Puls.PulsDAOImplement;
 import dataBase.Puls.PulsDTO;
@@ -16,23 +18,28 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 
 public class AppGUIController implements EkgListener {
 
-
+    public TextArea cprArea;
     double x = 0;
     public Button logIn;
     public Button patientData;
 
     public Label pulsLabel;
     public Button pulsLoad;
+    Instant start = Instant.now();
 
     public Button ekgStart;
     public Button backEkg;
@@ -69,7 +76,7 @@ public class AppGUIController implements EkgListener {
     }
 
     public void ekgScene(ActionEvent actionEvent) throws IOException {
-        Parent thirdPaneLoader = FXMLLoader.load(getClass().getResource("/EKG.fxml"));
+        Parent thirdPaneLoader = FXMLLoader.load(getClass().getResource("/Measurements.fxml"));
         Scene thirdScene = new Scene(thirdPaneLoader);
         Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         primaryStage.setScene(thirdScene);
@@ -96,21 +103,25 @@ public class AppGUIController implements EkgListener {
     }
 
     public void EkgNotify(LinkedList<EkgDTO> ekgDTOList) {
-
+        boolean clear = false;
+        List<Double> ekgPoints = new LinkedList<>();
+        for (int i = 0; i < ekgDTOList.size(); i++) {
+            EkgDTO ekgDTO = ekgDTOList.get(i);
+            ekgPoints.add(x);
+            ekgPoints.add((1500 - ekgDTO.getEKG_voltage()) / 10);
+            ekgDTO.setPatient_id(Integer.parseInt(idEkg.getText()));
+            x++;
+        }
+        if (x > 450) {
+            new Thread(() -> {
+                calculatePuls(ekgDTOList);
+            }).start();
+            x = 0;
+            clear = true;
+        }
+        boolean finalClear = clear;
         Platform.runLater(() -> {
-            List<Double> ekgPoints = new LinkedList<>();
-            for (int i = 0; i < ekgDTOList.size(); i++) {
-                EkgDTO ekgDTO = ekgDTOList.get(i);
-                ekgPoints.add(x);
-                ekgPoints.add((1500 - ekgDTO.getEKG_voltage()) / 10);
-                ekgDTO.setPatient_id(Integer.parseInt(idEkg.getText()));
-                x++;
-            }
-            if (x >= 540) {
-                for (int i = 0; i < ekgDTOList.size(); i++) {
-                    calculatePuls(ekgDTOList.get(i).getEKG_voltage());
-                }
-                x = 0;
+            if (finalClear) {
                 ekgGraf.getPoints().clear();
             }
             ekgGraf.getPoints().addAll(ekgPoints);
@@ -120,40 +131,54 @@ public class AppGUIController implements EkgListener {
         }).start();
     }
 
-    private void calculatePuls(double ekgPoints) {
-
-        double avg = 0;
-        double beats = 0;
+    private void calculatePuls(LinkedList<EkgDTO> ekgDTO) {
+        double avg;
         double max = Double.MIN_VALUE;
         double min = Double.MAX_VALUE;
-        for (int i = 1; i < ekgPoints.size(); i += 2) {
-            avg += ekgPoints.get(i) / (ekgPoints.size() / 2);
-            if (ekgPoints.get(i) < min) {
-                min = ekgPoints.get(i);
+        for (int i = 0; i < ekgDTO.size(); i++) {
+            if (ekgDTO.get(i).getEKG_voltage() < min) {
+                min = ekgDTO.get(i).getEKG_voltage();
             }
-            if (ekgPoints.get(i) > max) {
-                max = ekgPoints.get(i);
+            if (ekgDTO.get(i).getEKG_voltage() > max) {
+                max = ekgDTO.get(i).getEKG_voltage();
             }
-            avg = 0.2 * min + 0.8 * max;
         }
+        avg = 0.3 * min + 0.7 * max;
         boolean alreadyCounted = true;
-        for (int i = 1; i < ekgPoints.size(); i += 2) {
-            if (ekgPoints.get(i) > avg) {
+        for (int i = 0; i < ekgDTO.size(); i++) {
+            if (ekgDTO.get(i).getEKG_voltage() > avg) {
                 if (!alreadyCounted) {
-                    beats++;
+                    Timestamp ekg_time = ekgDTO.get(i).getEKG_time();
+                    long diff = Duration.between(start, ekg_time.toInstant()).toMillis();
+                    start = ekg_time.toInstant();
                     alreadyCounted = true;
+                    double bpm = (60000.0 / diff) * 1.375;
+                    PulsDTO pulsDTO = new PulsDTO();
+                    pulsDTO.setPatient_id(Integer.parseInt(idEkg.getText()));
+                    pulsDTO.setPuls_measurements(bpm);
+                    pulsDTO.setPuls_time(new Timestamp(System.currentTimeMillis()));
+                    if (bpm > 20 && bpm < 300) {
+                        Platform.runLater(() -> {
+                            pulsLabel.setText(String.valueOf(pulsDTO.getPuls_measurements()));
+                        });
+                        pulsDAO.save(pulsDTO);
+                    }
+                    //System.out.println("bpm = " + bpm);
+                } else {
+                    alreadyCounted = false;
                 }
-            } else {
-                alreadyCounted = false;
             }
         }
-        double bpm = beats * 45;
-        PulsDTO pulsDTO = new PulsDTO();
-        //pulsDTO.setPatient_id(Integer.parseInt(idEkg.getText()));
-        pulsDTO.setPuls_measurements(bpm);
-        //pulsDTO.setPuls_time(new Timestamp(System.currentTimeMillis()));
-        pulsLabel.setText(String.valueOf(pulsDTO.getPuls_measurements()));
-        //pulsDAO.save(pulsDTO);
-        System.out.println("bpm = " + bpm);
+    }
+
+    public void search(ActionEvent actionEvent) {
+        PatienterDAO patienterDAO = new PatienterDAO();
+        List<PatienterDTO> patienterDTOList;
+        patienterDTOList = patienterDAO.load();
+        StringBuilder text = new StringBuilder();
+        for (PatienterDTO patinterDTO : patienterDTOList) {
+            text.append("ID: ").append(patinterDTO.getID()).append(",  Cpr: ").append(patinterDTO.getCpr()).append("\r\n");
+        }
+        cprArea.setText(text.toString());
     }
 }

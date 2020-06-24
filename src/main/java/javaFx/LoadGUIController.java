@@ -24,7 +24,7 @@ import java.util.List;
 
 public class LoadGUIController {
 
-    public Button pulsSearch;  // referenser til controls fra FXML-filen
+    public Button pulsSearch;
     public Button pulsBack;
     public TextField idPulsField;
     public TextArea plusLoad;
@@ -59,17 +59,8 @@ public class LoadGUIController {
         plusLoad.setText(text.toString());
     }
 
-    public void patientData(ActionEvent actionEvent) throws IOException {
-        Parent secondPaneLoader = FXMLLoader.load(getClass().getResource("/PatientData.fxml"));
-        Scene secondScene = new Scene(secondPaneLoader);
-        Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        primaryStage.setScene(secondScene);
-        primaryStage.setTitle("Patient's Data");
-        primaryStage.show();
-    }
-
     public void ekgScene(ActionEvent actionEvent) throws IOException {
-        Parent thirdPaneLoader = FXMLLoader.load(getClass().getResource("/EKG.fxml"));
+        Parent thirdPaneLoader = FXMLLoader.load(getClass().getResource("/Measurements.fxml"));
         Scene thirdScene = new Scene(thirdPaneLoader);
         Stage primaryStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         primaryStage.setScene(thirdScene);

@@ -33,7 +33,7 @@ public class PC implements EkgObservable {
         while (true) {
             LinkedList<EkgDTO> consumedList;
             synchronized (this) {
-                while (ekgDTOS.size() < 100)
+                while (ekgDTOS.size() < 120)
                     wait();
                 consumedList = ekgDTOS;
                 ekgDTOS = new LinkedList<>();
@@ -43,7 +43,7 @@ public class PC implements EkgObservable {
                 notify();
             }
             /*for (EkgDTO i : consumedList) {
-                System.out.println("GUInummer " + i.getEKG_voltage());
+                System.out.println("Consumer Concumed- " + i.getEKG_voltage());
             }*/
         }
     }
