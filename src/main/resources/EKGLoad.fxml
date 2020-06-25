@@ -10,5 +10,5 @@
     <Label layoutX="14.0" layoutY="41.0" text="Type Patient's cpr:" />
     <Button fx:id="ekgBack" layoutX="14.0" layoutY="359.0" mnemonicParsing="false" onAction="#ekgScene" text="Back" />
     <Label layoutX="479.0" layoutY="6.0" text="Date: XX/XX/XXXX" />
-    <Polyline fx:id="ekgGraf" layoutY="200.0" />
+    <Polyline fx:id="ekgGraf" layoutX="20.0" layoutY="200.0" />
 </AnchorPane>
