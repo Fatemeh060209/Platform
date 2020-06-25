@@ -1,3 +1,4 @@
+/** @author Osama*/
 package ekgSensor;
 
 public class ThreadPC implements Runnable {

@@ -19,3 +19,4 @@
     <Polyline fx:id="ekgGraf" layoutX="20" layoutY="200.0" strokeType="INSIDE"/>
     <Label layoutX="479.0" layoutY="6.0" text="Date: XX/XX/XXXX"/>
 </AnchorPane>
+        <!--/** @author Fatemeh*/ -->

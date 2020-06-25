@@ -1,3 +1,4 @@
+/** @author Osama & Mohammed & Fatemeh*/
 package dataBase.EKG;
 
 import dataBase.Connector;
@@ -10,7 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class EkgDAOImplement implements EkgDAO {
-
 
     public void save(EkgDTO ekgDTO) {
         try {

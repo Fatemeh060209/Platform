@@ -1,3 +1,4 @@
+/** @author Osama*/
 package ekgSensor;
 
 public interface EkgObservable {
