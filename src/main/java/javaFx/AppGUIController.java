@@ -34,6 +34,7 @@ import java.util.List;
 public class AppGUIController implements EkgListener {
 
     public TextArea cprArea;
+    public Button search;
     double x = 0;
     public Button logIn;
     public Button patientData;
