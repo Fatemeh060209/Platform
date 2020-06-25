@@ -12,3 +12,4 @@
     <Label layoutX="479.0" layoutY="6.0" text="Date: XX/XX/XXXX" />
     <Polyline fx:id="ekgGraf" layoutX="20.0" layoutY="200.0" />
 </AnchorPane>
+        <!--/** @author Fatemeh*/ -->

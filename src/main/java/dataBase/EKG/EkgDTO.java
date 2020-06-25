@@ -1,3 +1,4 @@
+/** @author Osama & Mohammed */
 package dataBase.EKG;
 
 import java.sql.Timestamp;

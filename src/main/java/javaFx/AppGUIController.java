@@ -1,3 +1,4 @@
+/** @author Osama*/
 package javaFx;
 
 import dataBase.EKG.EkgDAO;

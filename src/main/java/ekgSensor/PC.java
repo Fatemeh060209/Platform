@@ -1,3 +1,4 @@
+/** @author Osama*/
 package ekgSensor;
 
 import dataBase.EKG.EkgDTO;
